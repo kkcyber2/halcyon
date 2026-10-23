@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halcyon — software that has to survive contact with production</title>
+<meta name="description" content="Independent engineering practice for payment systems, identity and data platforms. Fixed scope, written audits, a booking calendar that tells you why a slot is refused.">
+<meta property="og:title" content="Halcyon">
+<meta property="og:description" content="Independent engineering practice. Audits and builds for systems that cannot fail.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#book">Skip to booking</a>
+
+<header class="hud">
+  <span class="hud-mark">HALCYON</span>
+  <span class="hud-sep"></span>
+  <span class="hud-meta">INDEPENDENT ENGINEERING</span>
+  <span class="hud-fill"></span>
+  <span class="hud-stat" id="hud-clock">--:--:--</span>
+  <span class="hud-stat">UTC</span>
+  <a class="hud-cta" href="#book">BOOK A SESSION</a>
+</header>
+
+<main>
+  <!-- Hero: the claim, stated once, with the numbers that back it. -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="eyebrow">EST. 2019 · 41 ENGAGEMENTS · 0 ABANDONED</p>
+      <h1>Software that has to survive<br><em>contact with production.</em></h1>
+      <p class="lede">
+        I audit and build payment, identity and data systems — the parts where a
+        mistake is measured in money rather than in uptime. Every engagement ends
+        with a document your own engineers can act on.
+      </p>
+      <div class="hero-actions">
+        <a class="btn" href="#book">Book a discovery call</a>
+        <a class="btn-ghost" href="#work">See the work</a>
+      </div>
+    </div>
+    <div class="hero-panel" aria-hidden="true">
+      <div class="panel-row"><span>MEAN ENGAGEMENT</span><span>34 days</span></div>
+      <div class="panel-row"><span>AUDIT DEFECTS FOUND</span><span>1,204</span></div>
+      <div class="panel-row"><span>CRITICAL, MISSED BY CI</span><span>87%</span></div>
+      <div class="panel-row"><span>CLIENTS RETURNING</span><span>9 of 14</span></div>
+      <div class="panel-bars">
+        <i style="--h: 34%"></i><i style="--h: 52%"></i><i style="--h: 41%"></i>
+        <i style="--h: 68%"></i><i style="--h: 79%"></i><i style="--h: 61%"></i>
+        <i style="--h: 88%"></i><i style="--h: 94%"></i><i style="--h: 72%"></i>
+        <i style="--h: 83%"></i><i style="--h: 91%"></i><i style="--h: 97%"></i>
+      </div>
+      <p class="panel-note">Defects per 1k lines, pre- and post-engagement</p>
+      <div class="panel-axis"><span>PRE-AUDIT</span><span>POST-AUDIT</span></div>
+    </div>
+  </section>
+
+  <!-- Services as a numbered ledger, not three identical cards. -->
+  <section class="services" id="services">
+    <h2>What I do</h2>
+    <ol class="ledger">
+      <li>
+        <span class="num">01</span>
+        <div>
+          <h3>Architecture audit</h3>
+          <p>Two weeks inside your codebase. You get a defect register ordered by blast radius, not by effort, plus the three changes that remove the most risk per day of work.</p>
+        </div>
+        <span class="tag">2 WEEKS</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <div>
+          <h3>Payment and ledger work</h3>
+          <p>Idempotency, reconciliation, double-entry correctness, refund paths. Built against a test harness that replays real failure modes rather than mocking them.</p>
+        </div>
+        <span class="tag">4–8 WEEKS</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <div>
+          <h3>Identity and access</h3>
+          <p>Session models, authorisation boundaries, tenant isolation. Every boundary gets a test that proves the refusal, which is the only kind that matters.</p>
+        </div>
+        <span class="tag">3–6 WEEKS</span>
+      </li>
+      <li>
+        <span class="num">04</span>
+        <div>
+          <h3>Ongoing retainer</h3>
+          <p>A monthly session and a standing channel. Used by teams who want a second opinion available before the decision, not after the incident.</p>
+        </div>
+        <span class="tag">MONTHLY</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Booking: a real calendar driven by the API, refusals explained. -->
+  <section class="book" id="book">
+    <div class="book-head">
+      <h2>Book a session</h2>
+      <p>The calendar below is live — it reads the same booking rules the server enforces. Refused slots say why.</p>
+    </div>
+
+    <div class="book-controls">
+      <label for="kind">Session</label>
+      <select id="kind">
+        <option value="discovery">Discovery call · 30 min</option>
+        <option value="review">Architecture review · 60 min</option>
+        <option value="workshop">Workshop · 120 min</option>
+        <option value="retainer">Retainer session · 90 min</option>
+      </select>
+      <label for="day">Date</label>
+      <input type="date" id="day">
+      <button class="btn" id="find">Find next opening</button>
+    </div>
+
+    <div class="grid" id="grid" aria-live="polite"></div>
+
+    <form class="book-form" id="form" hidden>
+      <h3>Confirm <span id="chosen"></span></h3>
+      <div class="fields">
+        <label>Name <input name="name" required autocomplete="name"></label>
+        <label>Email <input name="email" type="email" required autocomplete="email"></label>
+        <label>Company <input name="company" autocomplete="organization"></label>
+        <label class="wide">What are you working on? <textarea name="brief" rows="3" required minlength="20"></textarea></label>
+      </div>
+      <p class="err" id="err" role="alert" hidden></p>
+      <button class="btn" type="submit">Request this slot</button>
+    </form>
+
+    <div class="confirmed" id="confirmed" hidden>
+      <h3>Requested</h3>
+      <p id="ref"></p>
+      <p class="note">You will get a reply within one working day confirming the time.</p>
+    </div>
+  </section>
+
+  <!-- Work: one representative case, told properly rather than as a grid of logos. -->
+  <section class="work" id="work">
+    <h2>Selected work</h2>
+    <article class="case">
+      <div class="case-side">
+        <span class="tag">PAYMENTS · 2025</span>
+        <h3>A ledger that could not disagree with itself</h3>
+        <p>Series-A marketplace, ~£40M annual volume, three separate balance calculations that drifted apart by up to 2% after a failed payout.</p>
+      </div>
+      <div class="case-body">
+        <p class="case-lead">The company did not have a money bug. It had three money models that each believed they were the source of truth.</p>
+        <ul>
+          <li>Introduced a single double-entry ledger with an append-only journal.</li>
+          <li>Every existing balance became a derived view, with a nightly reconciliation job that fails loudly.</li>
+          <li>Difference between reported and settled balances went from 2.1% to zero in six weeks.</li>
+        </ul>
+        <blockquote>“The audit paid for itself in the first month — it found a rounding path that was silently losing money on every refund.”</blockquote>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 460 170" role="img" aria-label="Before: three separate balance calculations. After: one append-only journal with derived views.">
+            <defs>
+              <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 z" fill="#47e2b0"/>
+              </marker>
+            </defs>
+            <!-- before -->
+            <text x="0" y="12" fill="#5c6b74" font-size="9" letter-spacing="2">BEFORE</text>
+            <rect x="0" y="22" width="86" height="30" fill="none" stroke="#39474f"/>
+            <text x="10" y="41" fill="#8ea0aa" font-size="9">ledger</text>
+            <rect x="0" y="62" width="86" height="30" fill="none" stroke="#39474f"/>
+            <text x="10" y="81" fill="#8ea0aa" font-size="9">payout svc</text>
+            <rect x="0" y="102" width="86" height="30" fill="none" stroke="#39474f"/>
+            <text x="10" y="121" fill="#8ea0aa" font-size="9">reporting</text>
+            <path d="M88 37 H140 M88 77 H140 M88 117 H140" stroke="#5b3a3a" stroke-dasharray="3 3"/>
+            <text x="146" y="82" fill="#c98b7d" font-size="10">2.1% drift</text>
+            <!-- after -->
+            <text x="250" y="12" fill="#5c6b74" font-size="9" letter-spacing="2">AFTER</text>
+            <rect x="250" y="52" width="86" height="46" fill="none" stroke="#47e2b0"/>
+            <text x="258" y="72" fill="#e6eef2" font-size="9">journal</text>
+            <text x="258" y="86" fill="#7d8f99" font-size="8">append-only</text>
+            <path d="M338 60 H382" stroke="#47e2b0" marker-end="url(#ah)"/>
+            <path d="M338 75 H382" stroke="#47e2b0" marker-end="url(#ah)"/>
+            <path d="M338 90 H382" stroke="#47e2b0" marker-end="url(#ah)"/>
+            <text x="386" y="63" fill="#8ea0aa" font-size="8">view</text>
+            <text x="386" y="78" fill="#8ea0aa" font-size="8">view</text>
+            <text x="386" y="93" fill="#8ea0aa" font-size="8">view</text>
+            <text x="250" y="124" fill="#47e2b0" font-size="9">drift 0.0%</text>
+          </svg>
+          <figcaption>Three writable balance models replaced by one journal and read-only views.</figcaption>
+        </figure>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <p>Halcyon · KK (Conan Sultan Khan) · <a href="https://github.com/kkcyber2">github.com/kkcyber2</a></p>
+  <p class="note">LinkedIn: [add on deployment] · This site and its booking engine are open source.</p>
+</footer>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>

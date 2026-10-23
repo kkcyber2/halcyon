@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "halcyon"
+version = "1.0.0"
+description = 'Venue site with cockpit-HUD chrome and a booking engine that provably prevents overbooking under concurrency.'
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "KK (Conan Sultan Khan)", email = "kkdev9715@gmail.com"}]
+keywords = ["halcyon"]
+
+[project.urls]
+Homepage = "https://github.com/kkcyber2/halcyon"
+Repository = "https://github.com/kkcyber2/halcyon"
+
+[tool.setuptools]
+packages = ["halcyon"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
