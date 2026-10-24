@@ -4,7 +4,7 @@ An independent engineering practice's site — with a booking engine that is rea
 
 The site is a single static page; the booking system behind it is a small Python service with a SQLite database, scheduling rules and a stateful API.
 
-**KK (Conan Sultan Khan)** · [github.com/kkcyber2](https://github.com/kkcyber2) · kkdev9715@gmail.com
+**Konain Sultan Khan (KK)** · [github.com/kkcyber2](https://github.com/kkcyber2) · kkdev9715@gmail.com
 
 ## Run it
 
