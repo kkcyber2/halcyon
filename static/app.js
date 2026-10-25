@@ -81,7 +81,13 @@ async function loadGrid() {
     }
     for (const slot of data.slots) gridEl.appendChild(renderSlot(slot));
   } catch (e) {
-    gridEl.innerHTML = `<p class="err">${e.message}</p>`;
+    // textContent, not innerHTML: the message can carry text from the server,
+    // and building markup from it would turn a stray '<' in an error into
+    // executable HTML the moment an error starts including user input.
+    const err = document.createElement("p");
+    err.className = "err";
+    err.textContent = e.message;
+    gridEl.replaceChildren(err);
   }
 }
 
