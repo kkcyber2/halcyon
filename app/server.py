@@ -130,6 +130,13 @@ class Handler(SimpleHTTPRequestHandler):
         if path == "/api/booking/list":
             return self._send_json({"bookings": store.list_bookings_detail()})
 
+        if path.startswith("/api/booking/"):
+            reference = path.rsplit("/", 1)[-1]
+            detail = store.get_booking_detail(reference)
+            if detail is None:
+                return self._send_json({"error": "no booking with that reference"}, 404)
+            return self._send_json(detail)
+
         if path == "/":
             self.path = "/index.html"
 

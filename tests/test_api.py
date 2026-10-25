@@ -167,3 +167,32 @@ class TestEnquiry:
             "name": "Grace", "email": "grace@example.com", "message": "hi",
         })
         assert status == 422
+
+
+class TestBookingLookup:
+    """GET /api/booking/<ref> is documented in the README, so it must exist."""
+
+    def test_created_booking_is_fetchable_by_reference(self, server):
+        status, created = post(server, "/api/booking", {
+            "kind": "review", "start": "2026-11-04T15:00",
+            "name": "Lookup Person", "email": "lookup@example.com", "brief": "find me",
+        })
+        assert status == 201
+        ref = created["reference"]
+
+        status, body = get(server, f"/api/booking/{ref}")
+        assert status == 200
+        assert body["reference"] == ref
+        assert body["name"] == "Lookup Person"
+        assert body["brief"] == "find me"
+
+    def test_unknown_reference_is_404_not_500(self, server):
+        status, body = get(server, "/api/booking/HC-DOESNOT")
+        assert status == 404
+        assert "error" in body
+
+    def test_list_route_still_wins_over_reference_route(self, server):
+        """A reference-shaped path must not swallow /api/booking/list."""
+        status, body = get(server, "/api/booking/list")
+        assert status == 200
+        assert "bookings" in body

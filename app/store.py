@@ -94,6 +94,26 @@ def list_bookings_detail(path: str | None = None) -> list[dict]:
     ]
 
 
+def get_booking_detail(reference: str, path: str | None = None) -> dict | None:
+    """One booking by its public reference, or None when it does not exist."""
+    with session(path) as conn:
+        row = conn.execute(
+            "SELECT * FROM bookings WHERE reference = ?", (reference,)
+        ).fetchone()
+    if row is None:
+        return None
+    return {
+        "reference": row["reference"],
+        "kind": row["kind"],
+        "start": row["start_iso"],
+        "duration": row["duration"],
+        "name": row["name"],
+        "email": row["email"],
+        "company": row["company"],
+        "brief": row["brief"],
+    }
+
+
 def add_booking(
     kind: SlotKind,
     start: datetime,
